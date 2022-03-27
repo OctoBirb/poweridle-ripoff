@@ -1,0 +1,57 @@
+<html>
+	<head>
+	</head>
+	<body>
+		<h1 id="j">You have 0 joules in storage.</h1>
+		<h1 id="m">You have 0 dollars.</h1>
+		<button id="gb" onclick="doGen()">Fire up your generator (D: 1, JPS: 1, CD: 0)</button>
+		<br>
+		<button id="grb" onclick="doGrd()">Sell your power (D: 1, J/&dollar;: 0.02, CD: 1, CD: 0)</button>
+		<script>
+			var joules = 0
+			var dollars = 0
+
+			var genDuration = 1
+			var genJPS = 1
+			var genCurrDurr = 0
+			var grdDuration = 1
+			var grdJDR = 0.02
+			var grdCurrDurr = 0
+			var grdJDrR = 0.05
+
+			var doGen = () => {
+				genCurrDurr += genDuration
+			}
+			var doGrd = () => {
+				if (joules > 0.025) {
+					grdCurrDurr += grdDuration
+				} else {
+					grdCurrDurr += 0
+				}
+			}
+
+			window.setInterval(function(){
+				document.getElementById("j").textContent = "You have " + (Math.round(joules * 100) / 100) + " joules in storage."
+				document.getElementById("m").textContent = "You have " + (Math.round(dollars * 100) / 100) + " dollars."
+				document.getElementById("gb").textContent = "Fire up your generator (D: " + (Math.round(genDuration * 100) / 100) + ", JPS: " + (Math.round(genJPS * 100) / 100) + ", CD: " + (Math.round(genCurrDurr * 100) / 100) + ")"
+				document.getElementById("grb").textContent = "Sell your power (D: " + (Math.round(grdDuration * 100) / 100) + ", J/$: " + (Math.round(grdJDR * 100) / 100) + ", CD: " + (Math.round(grdCurrDurr * 100) / 100) + ")"
+				if (genCurrDurr > 0.025) {
+					genCurrDurr -= 0.05
+					joules += (Math.round(genJPS * 100) / 100) / 20
+				} else {
+					genCurrDurr -= 0
+					joules += 0
+				}
+				if (grdCurrDurr > 0.025 && joules > 0.025) {
+					grdCurrDurr -= 0.05
+					dollars += (Math.round(grdJDR * 100) / 100) / 20
+					joules -= grdJDrR
+				} else {
+					grdCurrDurr -= 0
+					dollars += 0
+					joules -= 0
+				}
+			}, 50)
+		</script>
+	</body>
+</html>
